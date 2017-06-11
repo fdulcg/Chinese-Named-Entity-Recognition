@@ -91,12 +91,12 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
     outputs = TimeDistributed(Dense(7,activation='softmax'))(rnn_cnn_merge)
 
     model = Md(input = seq_input, output=outputs)
-    with open('model_crf.json', 'w') as fout: fout.write(model.to_json())
+    with open('model/model_crf.json', 'w') as fout: fout.write(model.to_json())
     modelfile = './model/model_crf.h5'
 
 
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    with open('model_crf.yaml', 'w') as fout: fout.write(model.to_yaml())
+    with open('model/model_crf.yaml', 'w') as fout: fout.write(model.to_yaml())
 
     if X.shape[0] > 5000: nb_epoch = 200
     if X.shape[0] > 10000: nb_epoch = 150
@@ -213,11 +213,7 @@ if __name__ == '__main__':
     # tag_to_id = {"O": 1, "LOC": 2, 
     #                "PER": 3, "ORG": 4 }        
     id_to_word, id_to_tag, train_data , dev_data , test_data= load_data(tag_to_id)
-    # train_manager = BatchManager(train_data, len(id_to_tag), 100, 128)
-    # dev_manager = BatchManager(dev_data, len(id_to_tag), 100, 128)
-    # test_manager = BatchManager(test_data, len(id_to_tag), 100, 128)
     embedding_layer = get_embedding(id_to_word)
     create_model(id_to_word,train_data,dev_data,test_data,embedding_layer)
-    # ret = testNer(X_test,Y_test)
 
     

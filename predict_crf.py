@@ -53,7 +53,7 @@ print(X_test.shape)
 
 modelfile = './model/model.h5'
 
-with open('./model.yaml') as fin: model = model_from_yaml(fin.read())
+with open('model/model.yaml') as fin: model = model_from_yaml(fin.read())
 if os.path.exists(modelfile): model.load_weights(modelfile)
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

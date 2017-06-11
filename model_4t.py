@@ -89,12 +89,12 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
     outputs = TimeDistributed(Dense(4,activation='softmax'))(after_dp)
     #output = TimeDistributed(Dense(1,activation='sigmod'))
     model = Md(input = seq_input, output=outputs)
-    with open('model_4t.json', 'w') as fout: fout.write(model.to_json())
+    with open('model/model_4t.json', 'w') as fout: fout.write(model.to_json())
     modelfile = './model/model_4t.h5'
 
 
     model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
-    with open('model_4t.yaml', 'w') as fout: fout.write(model.to_yaml())
+    with open('model/model_4t.yaml', 'w') as fout: fout.write(model.to_yaml())
 
     if X.shape[0] > 5000: nb_epoch = 200
     if X.shape[0] > 10000: nb_epoch = 150

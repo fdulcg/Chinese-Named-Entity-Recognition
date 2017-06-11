@@ -85,7 +85,7 @@ print (BIO_test.shape)
 
 modelfile = './model/model_bio.h5'
 
-with open('./model_bio.yaml') as fin: model = model_from_yaml(fin.read())
+with open('./model/model_bio.yaml') as fin: model = model_from_yaml(fin.read())
 if os.path.exists(modelfile): model.load_weights(modelfile)
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
