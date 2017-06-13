@@ -1,7 +1,4 @@
 import codecs
-#
-#
-
 #coding = utf-8
 import sys
 print (sys.getdefaultencoding())  
@@ -80,7 +77,10 @@ def doc_to_sentence(doc, max_len):
 
 
 def word_mapping(data, min_freq):
-    vocab = dict() #建立词汇表
+    """
+    create word dictionary
+    """
+    vocab = dict() 
     word_to_id = dict()
     word_id = 0
     for doc in data:
@@ -108,6 +108,9 @@ def word_mapping(data, min_freq):
 
 
 def prepare_data(data, word_to_id, tag_to_id, max_words):
+    """
+    Grasp as much as information though sometimes useless temporarily.
+    """
     processed_data = []
     for doc in data:
         doc = doc_to_sentence(doc, max_words)

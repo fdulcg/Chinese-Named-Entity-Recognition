@@ -1,6 +1,12 @@
+#os.environ['THEANO_FLAGS'] = "mode=FAST_RUN,device=gpu"    
 # coding=utf-8
+"""
+  Author:   fdulcg
+  Purpose:  make use of our bio_input model to create a simple demo that can automatically extract
+ 			named entities from txt file.  
+  Created: 2017/5/10
+"""
 import os, sys, time
-#os.environ['THEANO_FLAGS'] = "mode=FAST_RUN,device=cpu"    
 import numpy as np
 import scipy.io
 import  h5py
@@ -9,7 +15,6 @@ import jieba
 import jieba.posseg as pos
 time.clock()
 np.random.seed(1337) 
-
 
 from sklearn.externals import joblib
 from sklearn import cross_validation
@@ -29,6 +34,7 @@ id_to_tag = {i:t for t,i in tag_to_id.items()}
 
 
 word_to_id = {}
+
 with codecs.open('./wordlist.txt','r','utf-8') as wd:
     for each in wd:
         mapbt = str(each).split('    ')
