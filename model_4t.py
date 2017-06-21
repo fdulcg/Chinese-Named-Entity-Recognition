@@ -16,21 +16,6 @@ from utils import get_logger, load_word2vec, calculate_accuracy
 import pickle
 from loader_4t import load_data
 
-
-def prepareData(sentences):
-    word = []
-    tag = []
-    for each in sentences:
-        for i in each:  
-            try:
-                word.append(i[0])
-                tag.append(i[1])
-            except Exception as e:
-                pass
-
-    return word,tag
-
-
 def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None):
     
     id_to_word = {jj:ii for ii,jj in word_to_id.items()}
@@ -76,15 +61,6 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
     backwards = LSTM(128,return_sequences=True,go_backwards = True)(embedded)
     merged = merge([forwards,backwards],mode='concat',concat_axis=-1)
     after_dp = Dropout(0.2)(merged)
-   
-    # ## Convoluntion1D Layer
-    # half_window_size=2
-    # paddinglayer=ZeroPadding1D(padding=half_window_size)(embedded)
-    # conv=Conv1D(nb_filter=50,filter_length=(2*half_window_size+1),border_mode='valid')(paddinglayer)
-    # conv_d = Dropout(0.1)(conv)
-    # dense_conv = TimeDistributed(Dense(50))(conv_d)
-    # ## Concat Bi-LSTM Layer and Convolution Layer 
-    # rnn_cnn_merge=merge([after_dp,dense_conv], mode='concat', concat_axis=2)   
 
     outputs = TimeDistributed(Dense(4,activation='softmax'))(after_dp)
     #output = TimeDistributed(Dense(1,activation='sigmod'))
@@ -260,9 +236,6 @@ if __name__ == '__main__':
     tag_to_id = {"O": 1, "LOC": 2, 
                    "PER": 3, "ORG": 4 }        
     id_to_word, id_to_tag, train_data , dev_data , test_data= load_data(tag_to_id)
-    # train_manager = BatchManager(train_data, len(id_to_tag), 100, 128)
-    # dev_manager = BatchManager(dev_data, len(id_to_tag), 100, 128)
-    # test_manager = BatchManager(test_data, len(id_to_tag), 100, 128)
     embedding_layer = get_embedding(id_to_word)
     create_model(id_to_word,train_data,dev_data,test_data,embedding_layer)
     # ret = testNer(X_test,Y_test)
