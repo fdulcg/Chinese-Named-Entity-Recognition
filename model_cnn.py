@@ -91,13 +91,15 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
     outputs = TimeDistributed(Dense(7,activation='softmax'))(rnn_cnn_merge)
 
     model = Md(input = seq_input, output=outputs)
-    with open('model/model_crf.json', 'w') as fout: fout.write(model.to_json())
-    modelfile = './model/model_crf.h5'
+    with open('model/model_cnn.json', 'w') as fout: fout.write(model.to_json())
+    modelfile = './model/model_cnn.h5'
 
 
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    with open('model/model_crf.yaml', 'w') as fout: fout.write(model.to_yaml())
+    with open('model/model_cnn.yaml', 'w') as fout: fout.write(model.to_yaml())
 
+
+	## Number of Epoch should be decided by actual experiment environment
     if X.shape[0] > 5000: nb_epoch = 200
     if X.shape[0] > 10000: nb_epoch = 150
     if X.shape[0] > 40000: nb_epoch = 10
@@ -168,7 +170,7 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
         entityNum = 0
         findentityNum = 0
         score = 0
-        with open('./results/ner_crf.txt' , 'w', encoding='utf-8') as fout:
+        with open('./results/ner_cnn.txt' , 'w', encoding='utf-8') as fout:
             for x, y, z in zip(X_test, Y_test, Z):
                 for xx, yy, zz in zip(x,y,z ):
                     tagN = 0
