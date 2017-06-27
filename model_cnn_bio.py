@@ -98,12 +98,12 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
     outputs = TimeDistributed(Dense(7,activation='softmax'))(rnn_cnn_merge)
 
     model = Md(input = [seq_input,bio_input], output=outputs)
-    with open('model/model_bio_modified22.json', 'w') as fout: fout.write(model.to_json())
-    modelfile = './model/model_bio_modified22.h5'
+    with open('model/model_cnn_bio.json', 'w') as fout: fout.write(model.to_json())
+    modelfile = './model/model_cnn_bio_.h5'
 
 
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    with open('model/model_bio_modified22.yaml', 'w') as fout: fout.write(model.to_yaml())
+    with open('model/model_cnn_bio.yaml', 'w') as fout: fout.write(model.to_yaml())
 
     if X.shape[0] > 5000: nb_epoch = 200
     if X.shape[0] > 10000: nb_epoch = 100
@@ -113,41 +113,6 @@ def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None)
     model.fit([X,BIO], Y, batch_size=256, callbacks=[ModelCheckpoint(modelfile,save_best_only=True)], 
              validation_split=0.1,nb_epoch=nb_epoch)
     
-    # print ("###########     dev        ##############")
-
-    # X_dev = []
-    # Y_dev = []
-    # BIO_dev = []
-    # for sentence in dev_data:
-    #     X_dev.append(sentence['words'])
-    #     Y_dev.append(sentence['tags'])
-        
-    # tempY = []
-    # for sent in Y_dev:
-    #     sent2 = []
-    #     BIO_each = []
-    #     for wtag in sent:
-    #         xx = np.zeros(7)
-    #         xx[wtag-1] = 1
-    #         sent2.append(xx)
-
-    #         if (wtag ==2 or wtag==4 or wtag==6 ):   # B-LOC/B-PER/B-ORG
-    #             BIO_each.append(1)
-    #         elif (wtag == 3 or wtag==5 or wtag == 7 ):    # I-LOC/I-PER/I-ORG
-    #             BIO_each.append(2)
-    #         else:                                # O
-    #             BIO_each.append(0)
-    #     BIO_dev.append(BIO_each)
-    #     tempY.append(sent2)
-            
-    # X_dev, Y_dev , BIO_dev = np.array(X_dev, dtype='int32'), np.array(tempY, dtype='int32') , np.array(BIO_dev , dtype='int32')
-    # print ('***********dev******************')
-    # print(X_dev.shape[0])
-    # print(Y_dev.shape[0]) 
-    # print (BIO_dev.shape[0])
-
-    # loss_and_metrics = model.evaluate([X_dev,BIO_dev],Y_dev,batch_size = 128)
-    # print (loss_and_metrics)
 
     X_test = []
     Y_test = []
@@ -267,33 +232,6 @@ def get_embedding(id_to_word):
                                trainable=False)
     return embedding_layer
     #print ('Found %s word vectors')% len(embeddings_index)
-
-def testNer(X,Y,show=False):
-    Z = model.predict(X, batch_size=256,verbose=1)
-    print(Z.shape)
-
-    tZ = np_utils.probas_to_classes(Z.reshape((-1,1)))
-    tY = np_utils.probas_to_classes(Y.reshape((-1,1)))
-
-    TP = (tZ + tY == 2).sum()
-    PP = (tZ == 1).sum()
-    RR = (tY == 1).sum()
-    prec, reca = TP / PP, TP / RR
-    F1 = 2 * prec * reca / (prec + reca)
-    ret = 'P=%d/%d %.5f\tR=%d/%d %.5f\tF1=%.5f' % ( TP, PP, prec, TP, RR, reca, F1)
-    print(ret)
-    if show:
-        with open('results/ner.txt' , 'w', encoding='utf-8') as fout:
-            for x, y, z in zip(X, tY.reshape((-1, seqlen)), tZ.reshape((-1, seqlen))):
-                es = []
-                for wid, yy, zz in zip(x, y, z):
-                    wd = id_to_word[wid]
-                    if yy > 0: wd = '#' + wd + '#'
-                    if zz > 0: wd = '@' + wd + '@'
-                    es.append(wd)
-                    if wid == 0: break
-                fout.write(' '.join(es) + '\n')
-    return ret
 
 if __name__ == '__main__':
     tag_to_id = {"O": 1, "B-LOC": 2, "I-LOC": 3,
