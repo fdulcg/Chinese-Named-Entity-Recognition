@@ -79,6 +79,8 @@ def doc_to_sentence(doc, max_len):
 def word_mapping(data, min_freq):
     """
     create word dictionary
+    min_freq set Minimal appearance of each Chinese word
+    word to id is the mapping of word and number of times the word appeared
     """
     vocab = dict() 
     word_to_id = dict()
@@ -110,6 +112,7 @@ def word_mapping(data, min_freq):
 def prepare_data(data, word_to_id, tag_to_id, max_words):
     """
     Grasp as much as information though sometimes useless temporarily.
+    In the data form that a model could accept
     """
     processed_data = []
     for doc in data:
@@ -161,14 +164,18 @@ def prepare_data(data, word_to_id, tag_to_id, max_words):
 
 
 def load_data(tag_to_id):
+	word_freq = 2 
+	lengthofsen = 50
+	
     train_file = read_file('./data/fit.NER.train')
     dev_file = read_file('./data/SIGHAN.NER.dev')
     # test_file = read_conll_file('./data/SIGHAN.NER.test')
     test_file = read_file('./data/weiboNER.train')
-    word_to_id, id_to_word = word_mapping(train_file+dev_file, 2)
-    train_data = prepare_data(train_file, word_to_id, tag_to_id, 50)
-    dev_data = prepare_data(dev_file, word_to_id, tag_to_id, 50)
-    test_data = prepare_data(test_file, word_to_id, tag_to_id, 50)
+    word_to_id, id_to_word = word_mapping(train_file+dev_file, word_freq)
+
+    train_data = prepare_data(train_file, word_to_id, tag_to_id,lengthofsen)
+    dev_data = prepare_data(dev_file, word_to_id, tag_to_id, lengthofsen)
+    test_data = prepare_data(test_file, word_to_id, tag_to_id, lengthofsen)
     # train_data += dev_data
     print (len(word_to_id))
     print ('$$$$$$$$$$$$$$$$  word_to_id size   $$$$$$$$$$$$$$$$')
