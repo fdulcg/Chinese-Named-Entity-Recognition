@@ -12,9 +12,8 @@ from keras.layers import *
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.optimizers import *
 from keras.utils import np_utils
-from utils import get_logger, load_word2vec, calculate_accuracy
 import pickle
-from loader_4t import load_data
+from loader import load_data
 
 def  create_model(word_to_id,train_data,dev_data,test_data,embedding_layer=None):
     
@@ -234,8 +233,16 @@ if __name__ == '__main__':
     # tag_to_id = {"O": 1, "B-LOC": 2, "I-LOC": 2,
     #              "B-PER": 3, "I-PER": 3, "B-ORG": 4, "I-ORG": 4 }
     tag_to_id = {"O": 1, "LOC": 2, 
-                   "PER": 3, "ORG": 4 }        
-    id_to_word, id_to_tag, train_data , dev_data , test_data= load_data(tag_to_id)
+                   "PER": 3, "ORG": 4 }   
+
+    train_datasetaddr = './data/modified.NER.train'   
+    dev_datasetaddr = './data/modified.NER.dev'
+    test_datasetaddr =  './data/weibo_4t.test'
+    word_freq = 2 
+    lengthofsen = 50   
+ 
+    id_to_word, id_to_tag, train_data , dev_data , test_data= load_data(tag_to_id,train_datasetaddr,
+                                dev_datasetaddr,test_datasetaddr,word_freq,lengthofsen)
     embedding_layer = get_embedding(id_to_word)
     create_model(id_to_word,train_data,dev_data,test_data,embedding_layer)
     # ret = testNer(X_test,Y_test)
