@@ -12,7 +12,6 @@ from keras.layers import *
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.optimizers import *
 from keras.utils import np_utils
-from utils import get_logger, load_word2vec, calculate_accuracy
 import pickle
 from loader import load_data
 
