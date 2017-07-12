@@ -1,7 +1,4 @@
 import codecs
-#
-#
-
 #coding = utf-8
 import sys
 print (sys.getdefaultencoding())  
@@ -151,16 +148,20 @@ def prepare_data(data, word_to_id, tag_to_id, max_words):
                                    "end_of_doc": i == len_doc-1})
     return processed_data
 
-
-def load_data(tag_to_id):
-    train_file = read_file('./data/modified.NER.train')
-    dev_file = read_file('./data/modified.NER.dev')
+'''
+	Entry Function of this loader.py file
+	Usage: Read dataset file, create word_to_id dictionary , create train_data,test_data and dev_data
+	Return: word_to_id Dict,id_to_tag Dict,train_data,dev_data,test_data 
+'''
+def load_data(tag_to_id,train,dev,test,word_freq,lengthofsen):
+    train_file = read_file(train)
+    dev_file = read_file(dev)
     # test_file = read_conll_file('./data/modified.NER.test')
-    test_file = read_file('./data/weibo_4t.test')
-    word_to_id, id_to_word = word_mapping(train_file+dev_file, 2)
-    train_data = prepare_data(train_file,word_to_id,tag_to_id,50)
-    dev_data = prepare_data(dev_file,word_to_id,tag_to_id,50)
-    test_data = prepare_data(test_file, word_to_id, tag_to_id, 50)
+    test_file = read_file(test)
+    word_to_id, id_to_word = word_mapping(train_file+dev_file, word_freq)
+    train_data = prepare_data(train_file,word_to_id,tag_to_id,lengthofsen)
+    dev_data = prepare_data(dev_file,word_to_id,tag_to_id,lengthofsen)
+    test_data = prepare_data(test_file, word_to_id, tag_to_id, lengthofsen)
     # train_data += dev_data
     print (len(word_to_id))
     print ('$$$$$$$$$$$$$$$$  word_to_id size   $$$$$$$$$$$$$$$$')
