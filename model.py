@@ -12,7 +12,6 @@ from keras.layers import *
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.optimizers import *
 from keras.utils import np_utils
-from utils import get_logger, load_word2vec, calculate_accuracy
 import pickle
 from loader import load_data
 
@@ -266,12 +265,24 @@ def testNer(X,Y,show=False):
                 fout.write(' '.join(es) + '\n')
     return ret
 
+
+"""
+Entry Function , data set address and tag attribute as well as other necessary hyper-parameters are setted here.
+"""
 if __name__ == '__main__':
+
     tag_to_id = {"O": 1, "B-LOC": 2, "I-LOC": 3,
                  "B-PER": 4, "I-PER": 5, "B-ORG": 6, "I-ORG": 7 }
     # tag_to_id = {"O": 1, "LOC": 2, 
-    #                "PER": 3, "ORG": 4 }        
-    id_to_word, id_to_tag, train_data , dev_data , test_data= load_data(tag_to_id)
+    #                "PER": 3, "ORG": 4 }  
+    train_datasetaddr = './data/loc2org.train.train'
+    dev_datasetaddr = './data/SIGHAN.NER.dev'
+    test_datasetaddr =  './data/weiboNER.train'   
+    word_freq = 2 
+    lengthofsen = 50  
+
+    id_to_word, id_to_tag, train_data , dev_data , test_data= load_data(tag_to_id,train_datasetaddr,dev_datasetaddr,
+                                                        test_datasetaddr,word_freq,lengthofsen)
     embedding_layer = get_embedding(id_to_word)
     create_model(id_to_word,train_data,dev_data,test_data,embedding_layer)
 
