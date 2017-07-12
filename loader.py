@@ -144,21 +144,16 @@ def prepare_data(data, word_to_id, tag_to_id, max_words):
             for word in jieba.cut("".join(str_words)):
                 len_word = len(word)
                 if len_word == 1:
-                    features[index, 0] = 1 #S
                     index += 1
                 else:
-                    features[index, 1] = 1
                     index += 1
                     for i_ in range(len_word-2):
-                        features[index, 2] = 1
                         index += 1
-                    features[index, 3] = 1
                     index += 1
             processed_data.append({"str_line": str_words,
                                    "words": words,
                                    "tags": tags,
                                    "len": len_sen,
-                                   "features": features,
                                    "end_of_doc": i == len_doc-1})
     return processed_data
 
