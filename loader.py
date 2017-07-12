@@ -163,14 +163,17 @@ def prepare_data(data, word_to_id, tag_to_id, max_words):
     return processed_data
 
 
-def load_data(tag_to_id):
-	word_freq = 2 
-	lengthofsen = 50
-	
-    train_file = read_file('./data/fit.NER.train')
-    dev_file = read_file('./data/SIGHAN.NER.dev')
+'''
+	Entry Function of this loader.py file
+	Usage: Read dataset file, create word_to_id dictionary , create train_data,test_data and dev_data
+	Return: word_to_id Dict,id_to_tag Dict,train_data,dev_data,test_data 
+'''
+def load_data(tag_to_id,train,dev,test,word_freq,lengthofsen):
+
+    train_file = read_file(train)
+    dev_file = read_file(dev)
     # test_file = read_conll_file('./data/SIGHAN.NER.test')
-    test_file = read_file('./data/weiboNER.train')
+    test_file = read_file(test)
     word_to_id, id_to_word = word_mapping(train_file+dev_file, word_freq)
 
     train_data = prepare_data(train_file, word_to_id, tag_to_id,lengthofsen)
