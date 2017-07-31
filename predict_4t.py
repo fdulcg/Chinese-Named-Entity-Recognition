@@ -19,7 +19,13 @@ from keras.optimizers import *
 from keras.utils import np_utils
 from loader_4t import read_conll_file,prepare_data,load_data
 
-
+## Keras model update 
+'''
+dropout 变量不再在Embedding里面使用，使用keras.layers.layers.SpatialDropout1D 在Embedding层之后来获取相同效果
+merge 函数不再使用，改为使用keras.layers.merge .add .concatenate等
+Conv1D层 Conv1D(filters=50,kernel_size=5,padding="valid") conv = Conv1D(......)
+nb_epoch 变量在fit中被epochs变量取代
+'''
 
 tag_to_id = {"O": 1, "LOC": 2, 
                    "PER": 3, "ORG": 4 }    
