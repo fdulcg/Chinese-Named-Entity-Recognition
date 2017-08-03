@@ -9,6 +9,13 @@ Chinese Named Entity Recognition via BLSTM-CNN and BIO Input.  Using Keras and T
 *Python3.5
 
 
+### Run
+./ model files :       set your own file path and    python model.py  to train model
+
+./predict files:        set your own file path and    python predict.py  to use test_dataset to evaluate model
+
+./demo files:         prepare your own plain text and set your own file path and run a simple demo to get ner result.
+
 ### Chinese Named Entity Recognition using Bi-directional LSTMs and Convolutional Nerual Network using Keras. Added BIO sequence as the other input layer of our model.
 
 
